@@ -117,17 +117,6 @@
 					</execution>
 				</executions>
 			</plugin>
-        			<plugin>
-				        <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
-				        <artifactId>sonar-packaging-maven-plugin</artifactId>
-				        <version>1.21.0.505</version>
-				        <extensions>true</extensions>
-				        <configuration>
-				          <pluginKey>example</pluginKey>
-				          <pluginClass>org.sonarsource.plugins.example.ExamplePlugin</pluginClass>
-				          <sonarQubeMinVersion>9.5</sonarQubeMinVersion>
-				        </configuration>
-				      </plugin>
 			<plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
