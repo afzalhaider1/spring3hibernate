@@ -35,7 +35,7 @@ parameters {
                 }
                 steps {
                     withSonarQubeEnv('sonarQube') {
-                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=Spring3HibernateApp -Dsonar.projectName="Spring3HibernateApp"'
                     }
                 }
         }
@@ -57,10 +57,11 @@ parameters {
         stage('Publish Artifacts, If proceed') {
             steps {
                 script {
+                    // This stage will be executed only if the user proceeds in the "Input" stage.
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
-                        nexusUrl: '172.31.10.132:8081',
+                        nexusUrl: '172.31.31.154:8081',
                         groupId: 'Spring3HibernateApp',
                         version: '4.0.0',
                         repository: 'spring3hibernate',
@@ -78,15 +79,19 @@ parameters {
     }
     post {
         failure {
+            // Send email notification on job failure
             emailext body: "The build failed. Check the console output: ${BUILD_URL}",
                     subject: "[FAILURE] Build failed: ${currentBuild.fullDisplayName}",
                     to: "maiafzal@gmail.com"
+            // Send Slack notification on job failure
             slackSend(color: "danger", message: "The build failed. Check the console output: ${BUILD_URL}")
         }
         success {
+            // Send email notification on job success
             emailext body: "The build succeeded. View the artifacts: ${BUILD_URL}",
                     subject: "[SUCCESS] Build succeeded: ${currentBuild.fullDisplayName}",
                     to: "maiafzal@gmail.com"
+            // Send Slack notification on job success
             slackSend(color: "good", message: "The build succeeded. View the artifacts: ${BUILD_URL}")
         }
     }
